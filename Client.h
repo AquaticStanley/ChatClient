@@ -10,6 +10,9 @@
 #include <limits>
 #include "Config.h"
 
+const int MAX_MESSAGE_LENGTH = 1024;
+const int MAX_USERNAME_LENGTH = 256;
+
 class Client
 {
 private:

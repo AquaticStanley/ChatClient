@@ -38,19 +38,19 @@ Client::Client(Config config)
 
 
   // Introduce the client to server by passing username
-  char buff[1024];
-  char username_c_str[256];
+  char buff[MAX_MESSAGE_LENGTH];
+  char username_c_str[MAX_USERNAME_LENGTH];
 
   strcpy(username_c_str, username.c_str());
   write(socket_descriptor, username_c_str, sizeof(username_c_str));
 
   // Create a thread for reading messages
-  // std::thread readerThread(&Client::reader, this, socket_descriptor);
+  std::thread readerThread(&Client::reader, this, socket_descriptor);
 
   // Constantly write to server
   while(1)
   {
-    std::cin.getline(buff, 1024);
+    std::cin.getline(buff, MAX_MESSAGE_LENGTH);
     if(!strcmp(buff, "!quit"))
     {
       std::cout << "Break" << std::endl;
@@ -61,11 +61,13 @@ Client::Client(Config config)
 
   // Close threads and connections
   std::cout << "Connection will now be closed...\n";
+  readerThread.detach();
   close(socket_descriptor);
   std::cout << "Connection is now closed.\n\n";
 }
 
 void Client::reader(int socket_descriptor)
 {
-
+  // Make this 1024 + 256 probably
+  char buff[MAX_MESSAGE_LENGTH + MAX_USERNAME_LENGTH];
 }
