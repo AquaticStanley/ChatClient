@@ -53,7 +53,6 @@ Client::Client(Config config)
     std::cin.getline(buff, MAX_MESSAGE_LENGTH);
     if(!strcmp(buff, "!quit"))
     {
-      std::cout << "Break" << std::endl;
       break;
     }
     write(socket_descriptor, buff, sizeof(buff));
@@ -68,6 +67,10 @@ Client::Client(Config config)
 
 void Client::reader(int socket_descriptor)
 {
-  // Make this 1024 + 256 probably
-  char buff[MAX_MESSAGE_LENGTH + MAX_USERNAME_LENGTH];
+  char buff[MAX_MESSAGE_LENGTH + MAX_USERNAME_LENGTH] = "";
+  int readLength = 0;
+  while((readLength = read(socket_descriptor, buff, sizeof(buff))) > 0)
+  {
+    std::cout << buff << std::endl;
+  }
 }
