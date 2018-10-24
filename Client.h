@@ -7,6 +7,7 @@
 #include <exception>
 #include <unistd.h>
 #include <netdb.h>
+#include <arpa/inet.h>
 #include <limits>
 #include "Config.h"
 

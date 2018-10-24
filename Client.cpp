@@ -11,11 +11,23 @@ Client::Client(Config config)
   // Get the host
   struct hostent* host;
   std::cout << "Client is getting the host...\n";
-  std::string duh = "duh";
-  if((host = gethostbyname(config["DefaultServer"].c_str())) == NULL)
+  // if((host = gethostbyname(config["DefaultServer"].c_str())) == NULL)
+  // {
+  //   throw std::runtime_error("Server failed to locate host");
+  // }
+
+  // Parse IP
+  struct in_addr ip;
+  if (!inet_aton(config["DefaultIP"].c_str(), &ip))
+  {
+    throw std::runtime_error("Cannot parse IP");
+  }
+
+  if((host = gethostbyaddr((const void *)&ip, sizeof ip, AF_INET)) == NULL)
   {
     throw std::runtime_error("Server failed to locate host");
   }
+
   bcopy( host->h_addr_list[0], (char*)&server_addr.sin_addr, host->h_length );
   std::cout << "Success!\n\n";
 
